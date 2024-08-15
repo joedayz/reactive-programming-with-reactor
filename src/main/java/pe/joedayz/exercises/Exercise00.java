@@ -6,11 +6,12 @@ import reactor.core.publisher.Mono;
 public class Exercise00 {
   public static void main(String[] args) {
     // TODO: Create two Optional variables, one with a value and one empty
-
+    Optional<String> optionalWithValue = Optional.of("Hello");
+    Optional<String> optionalEmpty = Optional.empty();
 
     // TODO: Use the justOrEmpty method to create Mono instances for each Optional
-    Mono<String> monoWithValue = null;
-    Mono<String> monoEmpty = null;
+    Mono<String> monoWithValue = Mono.justOrEmpty(optionalWithValue);
+    Mono<String> monoEmpty = Mono.justOrEmpty(optionalEmpty);
 
     // Subscribe to both Monos and print the results
     monoWithValue.subscribe(
