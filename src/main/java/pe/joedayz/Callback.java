@@ -13,7 +13,7 @@ class Observer implements MyListener {
   }
 }
 
-class Publisher {
+class Publisher<I extends Number> {
   private List<MyListener> listeners = new ArrayList<MyListener>();
 
   public void addListener(MyListener listener) {
