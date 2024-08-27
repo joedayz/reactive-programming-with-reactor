@@ -1,6 +1,5 @@
 package pe.joedayz;
 
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +26,11 @@ public class ManejandoErrores {
 //            )
 //        )
 //        .subscribe(System.out::println);
+
+
+
+//
+//
 //    Flux<Integer> integerFlux =
 //        Flux.just(1, 2, 3, 4, 5);
 //
@@ -37,6 +41,9 @@ public class ManejandoErrores {
 //            System.out::println,
 //            System.out::println
 //        );
+
+
+    //doOnError
 //    Flux<Integer> integerFlux =
 //        Flux.just(1, 2, 3, 4, 5);
 //
@@ -49,8 +56,18 @@ public class ManejandoErrores {
 //                )
 //        )
 //        .subscribe(System.out::println);
+//
+//
+//    try {
+//      int j = j/(j-3);
+//    } catch(ArithmeticException e) {
+//      System.out.println(
+//          "ArithmeticException: " + e.getMessage()
+//      );
+//      throw e;
+//    }
 
-
+//
 //    Flux<Integer> integerFlux =
 //        Flux.just(1, 2, 3, 4, 5);
 //
@@ -62,11 +79,14 @@ public class ManejandoErrores {
 //                    "doOnError: " + e.getMessage()
 //                )
 //        )
-//        .subscribe(System.out::println,
+//        .subscribe(
+//            System.out::println,
 //            System.out::println
 //        );
 
+
 //    Flux<Integer> integerFlux = Flux.just(1, 2, 3, 4, 5);
+//
 //    integerFlux
 //        .map(i -> i/(i-3))
 //        .doOnError(ArithmeticException.class,
@@ -80,10 +100,23 @@ public class ManejandoErrores {
 //        .subscribe(System.out::println,
 //            System.out::println
 //        );
+//
+//
+//    try {
+//      int z = z/(z-3);
+//    } catch(ArithmeticException e) {
+//      System.out.println(
+//          "ArithmeticException: " + e.getMessage()
+//      );
+//      throw e;
+//    } finally {
+//      System.out.println("doFinally: ...");
+//    }
 
 
 //    Flux<Integer> integerFlux =
 //        Flux.just(1, 2, 3, 4, 5);
+//
 //
 //    integerFlux
 //        .map(i -> i/(i-3))
@@ -96,6 +129,7 @@ public class ManejandoErrores {
 //            System.out::println
 //        );
 
+//
 //    Flux<Integer> integerFlux =
 //        Flux.just(1, 2, 3, 4, 5);
 //    integerFlux
@@ -111,7 +145,7 @@ public class ManejandoErrores {
 
 //    Flux<Integer> integerFlux =
 //        Flux.just(1, 2, 3, 4, 5);
-//
+
 //    integerFlux
 //        .map(i -> i/(i-3))
 //        .onErrorResume(e -> Flux.just(4, 5))
@@ -119,7 +153,20 @@ public class ManejandoErrores {
 //            System.out::println
 //        );
 
-//
+//    integerFlux
+//        .onErrorResume(e -> Flux.just(4, 5))
+//        .map(i -> i/(i-3))
+//        .subscribe(System.out::println,
+//            System.out::println
+//        );
+//    try {
+//      int i = i/(i-3);
+//    } catch (ArithmeticException e) {
+//      throw new RuntimeException(
+//          "Unexpected exception", e
+//      );
+//    }
+
 //    Flux<Integer> integerFlux =
 //        Flux.just(1, 2, 3, 4, 5);
 //
@@ -164,6 +211,53 @@ public class ManejandoErrores {
 //        Flux.just(1, 2, 3, 4, 5);
 //
 //    integerFlux
+//        .map(i -> i/(i-3))
+//        .onErrorContinue((e, i) -> {
+//          System.out.format(
+//              "The value %d caused the exception: %s\n", i, e
+//          );
+//          throw new RuntimeException(e);
+//        })
+//        .subscribe(System.out::println,
+//            System.out::println
+//        );
+
+//    Flux<Integer> integerFlux = Flux.just(1, 2, 3, 4, 5);
+//    integerFlux
+//        .map(i -> i/(i-3))
+//        .onErrorContinue((e, i) -> {
+//          System.out.format(
+//              "The value %d caused the exception: %s\n", i, e
+//          );
+//        })
+//        .onErrorResume(e -> Mono.just(99))
+//        .subscribe(System.out::println,
+//            System.out::println
+//        );
+
+
+//    Flux<Integer> integerFlux =
+//        Flux.just(1, 2, 3, 4, 5);
+//
+//    integerFlux
+//        .flatMap(val ->
+//            Mono.just(val)
+//                .map(i -> i/(i-3))
+//                .doOnError(
+//                    e -> System.out.println(
+//                        "Inside exception: " + e
+//                    )
+//                )
+//                .onErrorResume(e -> Mono.empty())
+//        )
+//        .subscribe(System.out::println,
+//            System.out::println
+//        );
+
+//    Flux<Integer> integerFlux =
+//        Flux.just(1, 2, 3, 4, 5);
+//
+//    integerFlux
 //        .flatMap(val ->
 //            Mono.just(val)
 //                .map(i -> i/(i-3))
@@ -173,7 +267,6 @@ public class ManejandoErrores {
 //                    )
 //                )
 //                .onErrorResume(e -> Mono.empty())
-//                .onErrorStop()
 //        )
 //        .onErrorContinue((e, i) -> {
 //          System.out.format(
@@ -184,60 +277,39 @@ public class ManejandoErrores {
 //            System.out::println
 //        );
 
-//    Flux<Integer> integerFlux =
-//        Flux.just(1, 2, 3, -44, 5);
-//
-//    integerFlux
-//        //.map(i -> getValue(i)) // This won't compile
-//        .map(i -> {
-//          try {
-//            return getValue(i);
-//          } catch (Exception e) {
-//            e.printStackTrace();
-//            return 0;
-//          }
-//        })
-//        .subscribe(System.out::println);
-//    Flux<Integer> integerFlux =
-//        Flux.just(1, 2, 3, -4, 5);
-//
-//    integerFlux
-//        //.map(i -> getValue(i))  // This won't compile
-//        .map(i -> {
-//          try {
-//            return getValue(i);
-//          } catch (Exception e) {
-//            throw Exceptions.bubble(e);
-//          }
-//        })
-//        .subscribe(System.out::println,
-//            System.out::println
-//        );
 
     Flux<Integer> integerFlux =
-        Flux.just(1, 2, 3, -4, 5);
+        Flux.just(1, 2, 3, 4, 5);
 
     integerFlux
-        //.map(i -> getValue(i))  // This won't compile
-        .map(i -> {
-          try {
-            return getValue(i);
-          } catch (Exception e) {
-            throw Exceptions.propagate(e);
-          }
+        .flatMap(val ->
+            Mono.just(val)
+                .map(i -> i/(i-3))
+                .doOnError(e ->
+                    System.out.println(
+                        "Inside exception: " + e
+                    )
+                )
+                .onErrorResume(e -> Mono.empty())
+                .onErrorStop()
+        )
+        .onErrorContinue((e, i) -> {
+          System.out.format(
+              "The value %d caused the exception: %s\n", i, e
+          );
         })
         .subscribe(System.out::println,
-            e -> System.out.println(Exceptions.unwrap(e))
+            System.out::println
         );
 
   }
 
-  private static int getValue(int i) throws Exception {
-    if(i < 0) {
-      throw new Exception(
-          "The input value cannot be zero"
-      );
-    }
-    return i * 10;
-  }
+//  private static int getValue(int i) throws Exception {
+//    if(i < 0) {
+//      throw new Exception(
+//          "The input value cannot be zero"
+//      );
+//    }
+//    return i * 10;
+//  }
 }
