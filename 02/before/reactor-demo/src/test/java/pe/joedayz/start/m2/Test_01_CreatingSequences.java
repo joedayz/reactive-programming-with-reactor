@@ -35,12 +35,14 @@ public class Test_01_CreatingSequences {
 
   @Test
   void example_04_JustOrEmpty(){
+    //Cuando no estamos seguros de que haya elementos
     Mono<Integer> emptyMono1 = Mono.justOrEmpty(Optional.empty());
     Mono<Integer> emptyMono2 = Mono.justOrEmpty(null);
   }
 
   @Test
   void example_05_From(){
+    //Para crear mono o flux desde otros objetos
     Flux<Integer> integerFlux = Flux.just(1, 2);
     Mono<Integer> mono1 = Mono.from(integerFlux);
     Mono<Integer> mono2 = Mono.fromDirect(integerFlux);
@@ -94,8 +96,19 @@ public class Test_01_CreatingSequences {
 
   @Test
   void example_12_Defer(){
-    Flux<Integer> fluxDeferreed = Flux.defer(() -> Flux.just(myValue));
-
+    Flux<Integer> fluxDeferreed = Flux.defer(() -> Flux.just(1, 2, 3));
   }
 
+  @Test
+  void example_13_Defer(){
+    // getValue() puede ser ejecutado multiples veces
+    Mono<Integer> monoDeferred = Mono.defer(() -> Mono.just(getValue()));
+    // getValue() solo se ejecuta una vez
+    Mono<Integer> monoNotDeferred = Mono.just(getValue());
+  }
+
+  private Integer getValue(){
+    System.out.println("getValue()");
+    return 1;
+  }
 }
